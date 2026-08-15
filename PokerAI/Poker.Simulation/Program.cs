@@ -1,9 +1,21 @@
 ﻿using System;
+using Poker.Core;
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello World!");
+        Deck.PopulateDeck();
+        Deck.ShuffleDeck();
+        foreach(Card card in Deck.CardDeck)
+        {
+            Console.WriteLine(card.Rank + " of " + card.Suit);
+        }
+        //Console.WriteLine("\n \n \n");
+        //Deck.ShuffleDeck();
+        //foreach (Card card in Deck.CardDeck)
+        //{
+        //    Console.WriteLine(card.Rank + " of " + card.Suit);
+        //}
     }
 
 }
