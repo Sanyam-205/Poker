@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Poker.Bot/Poker.Bot.csproj" />
+  <Project Path="Poker.Core/Poker.Core.csproj" />
+  <Project Path="Poker.Simulation/Poker.Simulation.csproj" />
+</Solution>
