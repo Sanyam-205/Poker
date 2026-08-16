@@ -38,16 +38,17 @@ namespace Poker.Core
 
     public readonly struct Card
     {
-        private static readonly int suitMask = 0b00000000000000001111000000000000;
-        private static readonly int rankMask = 0b00000000000000000000111100000000;
-        private static readonly int primeMask = 0b00000000000000000000000011111111;
-        private static readonly int[] primes = {0, 0, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41}; // Array of prime numbers for each rank. 
-        public int value { get; }
+        public static readonly int suitMask = 0b00000000000000001111000000000000;
+        public static readonly int rankMask = 0b00000000000000000000111100000000;
+        public static readonly int primeMask = 0b00000000000000000000000011111111;
+        public static readonly int[] primes = {0, 0, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41}; // Array of prime numbers for each rank. 
+        private static readonly int[] rankToRankBitmask = { 0, 0, 1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8, 1 << 9, 1 << 10, 1 << 11, 1 << 12 }; 
+        public int Value { get; }
         // A value of integer type that can be assesed by anyone but can only be assigned once by the struct constructor. This value is immutable once set.
 
         public Card(Rank rank, Suit suit) // constructor. This is what will allow us to use the struct to create a card.
         {
-            value = ((1 << (int)rank) << 16) | (int)rank << 8 | (int)suit << 12 | primes[(int)rank];
+            Value = (rankToRankBitmask[(int)rank] << 16 | (int)rank << 8 | (int)suit << 12 | primes[(int)rank]);
             // The struct defines each card as one 32 bit integer. This is the card's 'value'. 
             // To set this value, we use bitwise OR operator and left shift operator to se the bits of rank and suit. We OR it with the primes array to set the prime number corresponding to that rank. The primes array is indexed by the rank of the card. 
             // Lastly, we create a bitmask for the rank by left shifting 1 by the rank of the card and left shifting that by 16.
@@ -60,11 +61,11 @@ namespace Poker.Core
         }
 
         //Bit masking. Did it extensively in Arbor. Self explanatory I'd say
-        public Rank Rank => (Rank)((value & rankMask) >> 8); // Right shifting by eight gives us the exact rank
-        public Suit Suit => (Suit)((value & suitMask) >> 12); // Right shifting by twelve gives us the exact suit
-        public int Prime => value & primeMask;
+        public Rank Rank => (Rank)((Value & rankMask) >> 8); // Right shifting by eight gives us the exact rank
+        public Suit Suit => (Suit)((Value & suitMask) >> 12); // Right shifting by twelve gives us the exact suit
+        public int Prime => Value & primeMask;
 
-        //public int RankBitMask => (1 << (int)Rank) >> 16;
+        public int RankBitMask => (1 << (int)Rank) >> 16;
 
     }
 
