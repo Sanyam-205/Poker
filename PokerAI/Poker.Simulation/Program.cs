@@ -18,16 +18,16 @@ class Program
         //{
         //    Console.WriteLine(card.Rank + " of " + card.Suit + " Card Value = " + card.Value);
         //}
-        Console.WriteLine("MSB for A High: " + BitOperations.LeadingZeroCount(0b00011111000000000000000000000000 >> 16));
-        Console.WriteLine("MSB for K High: " + BitOperations.LeadingZeroCount(0b00001111100000000000000000000000 >> 16));
-        Console.WriteLine("MSB for Q High: " + BitOperations.LeadingZeroCount(0b00000111110000000000000000000000 >> 16));
-        Console.WriteLine("MSB for J High: " + BitOperations.LeadingZeroCount(0b00000011111000000000000000000000 >> 16));
-        Console.WriteLine("MSB for T High: " + BitOperations.LeadingZeroCount(0b00000001111100000000000000000000 >> 16));
-        Console.WriteLine("MSB for 9 High: " + BitOperations.LeadingZeroCount(0b00000000111110000000000000000000 >> 16));
-        Console.WriteLine("MSB for 8 High: " + BitOperations.LeadingZeroCount(0b00000000011111000000000000000000 >> 16));
-        Console.WriteLine("MSB for 7 High: " + BitOperations.LeadingZeroCount(0b00000000001111100000000000000000 >> 16));
-        Console.WriteLine("MSB for 6 High: " + BitOperations.LeadingZeroCount(0b00000000000111110000000000000000 >> 16));
-        Console.WriteLine("MSB for 5 High: " + BitOperations.LeadingZeroCount(0b00010000000011110000000000000000 >> 16));
+        //Console.WriteLine("MSB for A High: " + BitOperations.LeadingZeroCount(0b00011111000000000000000000000000 >> 16));
+        //Console.WriteLine("MSB for K High: " + BitOperations.LeadingZeroCount(0b00001111100000000000000000000000 >> 16));
+        //Console.WriteLine("MSB for Q High: " + BitOperations.LeadingZeroCount(0b00000111110000000000000000000000 >> 16));
+        //Console.WriteLine("MSB for J High: " + BitOperations.LeadingZeroCount(0b00000011111000000000000000000000 >> 16));
+        //Console.WriteLine("MSB for T High: " + BitOperations.LeadingZeroCount(0b00000001111100000000000000000000 >> 16));
+        //Console.WriteLine("MSB for 9 High: " + BitOperations.LeadingZeroCount(0b00000000111110000000000000000000 >> 16));
+        //Console.WriteLine("MSB for 8 High: " + BitOperations.LeadingZeroCount(0b00000000011111000000000000000000 >> 16));
+        //Console.WriteLine("MSB for 7 High: " + BitOperations.LeadingZeroCount(0b00000000001111100000000000000000 >> 16));
+        //Console.WriteLine("MSB for 6 High: " + BitOperations.LeadingZeroCount(0b00000000000111110000000000000000 >> 16));
+        //Console.WriteLine("MSB for 5 High: " + BitOperations.LeadingZeroCount(0b00010000000011110000000000000000 >> 16));
 
         /*
          "MSB for A High: " + 

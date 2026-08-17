@@ -49,11 +49,11 @@ namespace Poker.Core
 
         public static void DealCustomCards(int numberOfCustomCards)
         {
-            Card customCard1 = new Card(Rank.Ten, Suit.Club);
-            Card customCard2 = new Card(Rank.Jack, Suit.Diamond);
-            Card customCard3 = new Card(Rank.Queen, Suit.Heart);
-            Card customCard4 = new Card(Rank.Nine, Suit.Spade);
-            Card customCard5 = new Card(Rank.King, Suit.Diamond);
+            Card customCard1 = new Card(Rank.Ten,   Suit.Spade);
+            Card customCard2 = new Card(Rank.Jack,  Suit.Spade);
+            Card customCard3 = new Card(Rank.Queen, Suit.Diamond);
+            Card customCard4 = new Card(Rank.Nine,  Suit.Diamond);
+            Card customCard5 = new Card(Rank.King,  Suit.Diamond);
 
             customDealtCards[0] = customCard1;
             customDealtCards[1] = customCard2;

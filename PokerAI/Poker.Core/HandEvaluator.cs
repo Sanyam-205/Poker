@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Poker.Core
 {
-    // Royal Flush
-    // Straight Flush
+    // Royal Flush .................
+    // Straight Flush...............
     // Four of a Kind
-    // Full House
-    // Flush
-    // Straight
+    // Full House -> 3 of a kind + 2 pair
+    // Flush........................
+    // Straight.....................
     // Three of a kind
     // Two Pair
     // One Pair
@@ -24,8 +24,23 @@ namespace Poker.Core
     // To check for duplicates, we can use the bitwise AND operator on the prime value of each card.
 
     // 3 bits unused, 13 bits for rank mask, 4 bits for suit, 4 bits for rank, 8 bits for prime number. 
-    public class HandEvaluator
+    public static class HandEvaluator
     {
+
+        public enum HandResult
+        {
+            Royal_Flush,
+            Straight_Flush,
+            Four_Kind,
+            Full_House,
+            Flush,
+            Straight,
+            Three_Kind,
+            Two_Pair,
+            Pair,
+            High_Card
+                
+        }
         private static readonly ulong[] straightMask = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0b1111100000000, // Ace High
             0b111110000000, // King High
@@ -37,10 +52,20 @@ namespace Poker.Core
             0b111110, // 7 High
             0b11111, // 6 High
             0b1000000001111  // 5 High or Ace low
-        };  
+        };
+        private static bool isAceHigh = false;
+
+
+        private static int handResult = -1; // Default value for handResult. If no hand is found, it will remain -1.
+
+        public static int[] ResultArray = new int[100]; // Array to store the results of each round. Each hand result will be stored in the array. This will be used later for analyzing the hand result and maybe as training data.
+        //=======================================================================
+        // Array declared at size 100 for now. CHANGE LATER!!!!!!!!!!
+        //=======================================================================
         public static void EvaluateHand(Card[] hand)
         {
             int sameSuit = hand[0].Value & hand[1].Value & hand[2].Value & hand[3].Value & hand[4].Value & Card.suitMask;
+            Console.WriteLine($"sameSuit value : {Convert.ToString(sameSuit, 2)}");
             // when doing hand[0].value & hand[1].value & Card.suitMask, the bitwise AND operator will return a value that has the same suit bits set to one. If all 5 cards are of the same suit lets say spades, then sameSuit will be equal to 00000000000000000011000000000000. If the cards are of different suits, then sameSuit will be equal to 0. 
             // We use this to check in one cpu cycle if there is a flush or not. The same flush check will be useful for straight flush and royal flush.
 
@@ -51,11 +76,11 @@ namespace Poker.Core
 
             //int rankCheck = (hand[0].Value & hand[1].Value & hand[2].Value & hand[3].Value & hand[4].Value) >> 16; // We right shift by 16 to remove the bits we don't need for rankCheck.
 
-            int rankCheck = hand[0].Value >> 16 | hand[1].Value >> 16 | hand[2].Value >> 16 | hand[3].Value >> 16 | hand[4].Value >> 16; 
+            int rankCheck = hand[0].Value >> 16 | hand[1].Value >> 16 | hand[2].Value >> 16 | hand[3].Value >> 16 | hand[4].Value >> 16;
             // We right shift by 16 to remove the bits we don't need for rankCheck. We use bitwise OR operator to combine the rank bitmask of each card in the hand. If the result is not 0, then we have a sequence. If the result is 0, then we don't have a sequence.
-            
-            
-            
+
+
+
             //Console.WriteLine($"hand 0 value = {Convert.ToString(hand[0].Value >> 16, 2)}");
             //Console.WriteLine($"hand 1 value = {Convert.ToString(hand[1].Value >> 16, 2)}");
             //Console.WriteLine($"hand 2 value = {Convert.ToString(hand[2].Value >> 16, 2)}");
@@ -64,44 +89,138 @@ namespace Poker.Core
 
             //Console.WriteLine($"Rank Check Value : {Convert.ToString(rankCheck, 2)}");
 
+            bool isStraight = CheckForStraight(rankCheck);
+            bool isFlush = CheckForFlush(sameSuit);
+
+            if(isFlush)
+            {
+                Console.WriteLine("Same suit for all 5 cards");
+            }
+            if (isStraight)
+            {
+                Console.WriteLine("All 5 cards in a sequence");
+            }
+
+            if (isFlush && isStraight && isAceHigh) // royal flush
+            {
+                Console.WriteLine("Royal Flush");
+                handResult = (int)HandResult.Royal_Flush; // DO LATER
+
+            }
+
+            else if (isFlush && isStraight) // straight flush
+            {
+                Console.WriteLine("Straight Flush");
+                handResult = (int)HandResult.Straight_Flush; // DO LATER
+
+            }
+
+            /*
+             
+             
+             FOUR OF A KIND
+             
+             
+             */
+
+            /*
+             
+             
+             FULL HOUSE
+
+
+             
+             */
+
+            else if (isFlush && !isStraight) // flush
+            {
+                Console.WriteLine("Flush");
+                handResult = (int)HandResult.Flush; // DO LATER
+            }
+
+            else if (isStraight && !isFlush) // straight
+            {
+                Console.WriteLine("Straight");
+                handResult = (int)HandResult.Straight; // DO LATER
+            }
+
+            /*
+            
+            three of a kind
+            two pair
+            one pair
+             
+             */
+            else 
+            {
+                // High Card
+                handResult = (int)HandResult.High_Card;
+            }
+
+
+
+
+
+
+
 
 
             // to check for a sequence, we can use the bitwise AND operator on the rankCheck value and the straightFlushes array. If the result is not 0, then we have a straight or a straight flush. If the result is 0, then we don't have a straight or a straight flush.
 
-            if(rankCheck != 0) // we have a straight or a straight flush. We will check for flush later.
+
+
+        }
+
+        private static bool CheckForFlush(int sameSuit)
+        {
+            if (sameSuit != 0)
+            {
+                //Console.WriteLine("Flush ");
+                return true;
+            }
+            return false;
+        }
+
+        private static bool CheckForStraight(int rankCheck)
+        {
+            if (rankCheck != 0)
             {
                 //Console.WriteLine("Straight I think");
 
-                int MSBValue = System.Numerics.BitOperations.LeadingZeroCount((uint)rankCheck); // We use leading zero count to find most significant bit set to 1. For Ace high, this is 19, K-high is 20, Q-high is 21...., 6-high is 27 and ace-low/5-high is also 19. We will have a separate check for ace low.
+                int MSBValue = System.Numerics.BitOperations.LeadingZeroCount((uint)rankCheck);
+                // We use leading zero count to find most significant bit set to 1. For Ace high, this is 19, K-high is 20, Q-high is 21...., 6-high is 27 and ace-low/5-high is also 19. We will have a separate check for ace low.
                 // The straightMask array is indexed by the corresponding MSB value for each of the 10 possible straights, so we can use that value directly as index and achieve O(1) time complexity compared to O(n) for a for loop.
 
-                if(MSBValue != 0) // standard safety check
+                if (MSBValue != 0) // standard safety check
                 {
                     if (MSBValue != 19 && ((ulong)rankCheck == straightMask[MSBValue]))
                     {
                         // We have a straight. Do something
-                        Console.WriteLine("Straight found with MSB value: " + MSBValue);
+                        //Console.WriteLine("Straight found with MSB value: " + MSBValue);
+                        return true;
 
                     }
                     // Separate check for ACE
                     else if (MSBValue == 19 && (ulong)rankCheck == straightMask[19]) // Ace has MSB of 19 on two occassions
                     {
-                        Console.WriteLine("Ace high Straight found");
+                        //Console.WriteLine("Ace high Straight found");
+                        isAceHigh = true;
+                        
+                        return true;
                         // ACE HIGH STRAIGHT
                     }
                     else if (MSBValue == 19 && (ulong)rankCheck == straightMask[28]) // Ace has MSB of 19 on two occassions
                     {
-                        Console.WriteLine("Ace low Straight found");
+                        //Console.WriteLine("Ace low Straight found");
+                        return true;
                         // ACE LOW STRAIGHT
                     }
-                    
+
                 }
 
             }
 
-
-            
-
+            return false;
         }
 
     }
