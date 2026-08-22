@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Numerics;
+using System.IO;
 using Poker.Core;
+using System.Diagnostics;
 class Program
 {
     static void Main(string[] args)
     {
-        Deck.PopulateDeck();
-        Deck.ShuffleDeck();
+        //Deck.PopulateDeck();
+        //Deck.ShuffleDeck();
 
         //Deck.DealCards(25);
         //foreach(Card card in Deck.dealtCards)
@@ -51,26 +53,60 @@ class Program
         //    Console.WriteLine(card.Rank + " of " + card.Suit);
         //}
 
+        /*
+            Two of Heart
+            10100001000000010
+            Four of Heart
+            1000100010000000101
+            Three of Club
+            100001001100000011
+            Three of Spade
+            101000001100000011
+            Three of Heart
+            100100001100000011
+         */
+
 
 
 
         //Deck.DealCustomCards(5);
-        Deck.DealCards(5);
-        foreach (Card card in Deck.dealtCards)
-        {
-            Console.WriteLine(card.Rank + " of " + card.Suit);
-        }
-        //Card card1 = Deck.dealtCards[0];
-        //Console.WriteLine(card1.Suit);
-        HandEvaluator.EvaluateHand(Deck.dealtCards);
-        
+        //////Deck.DealCards(5);
+        //foreach (Card card in Deck.customDealtCards)
+        //{
+        //    Console.WriteLine(card.Rank + " of " + card.Suit);
+        //}
+        //////Card card1 = Deck.dealtCards[0];
+        //////Console.WriteLine(card1.Suit);
+        //Console.WriteLine(HandEvaluator.EvaluateHand(Deck.customDealtCards));
+
 
         //Card twoOfClubs = new Card(Rank.Two, Suit.Club);
         //Console.WriteLine($"Two of Clubs value = {Convert.ToString(twoOfClubs.Value , 2)}");
 
         //Console.WriteLine((1 << (int)2 - 2) << 16);
         //Console.WriteLine(Convert.ToString((1 << (int)2 - 2) << 16), 2);
+
+        #region logging
+        Deck.PopulateDeck();
+        for (int i = 5001; i < 10001; i++)
+        {
+            Deck.ShuffleDeck();
+            Deck.DealCards(5);
+            string path = @"D:\Poker\PokerAI\Poker.Core\TestResult.txt";
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                foreach (Card card in Deck.dealtCards)
+                {
+                    writer.WriteLine(card.Rank + " of " + card.Suit);
+                }
+                writer.WriteLine($"Result of hand {i}: {HandEvaluator.EvaluateHand(Deck.dealtCards)} \n");
+            }
+        }
+        Console.WriteLine("Test finished!");
+        Console.ReadKey();
+        #endregion
+
+
     }
-    //100 0000 0010 00000010
 
 }
