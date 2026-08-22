@@ -6,7 +6,7 @@ class Program
     static void Main(string[] args)
     {
         Deck.PopulateDeck();
-        //Deck.ShuffleDeck();
+        Deck.ShuffleDeck();
 
         //Deck.DealCards(25);
         //foreach(Card card in Deck.dealtCards)
@@ -54,13 +54,16 @@ class Program
 
 
 
-        Deck.DealCustomCards(5);
-        foreach (Card card in Deck.customDealtCards)
+        //Deck.DealCustomCards(5);
+        Deck.DealCards(5);
+        foreach (Card card in Deck.dealtCards)
         {
             Console.WriteLine(card.Rank + " of " + card.Suit);
         }
-
-        HandEvaluator.EvaluateHand(Deck.customDealtCards);
+        //Card card1 = Deck.dealtCards[0];
+        //Console.WriteLine(card1.Suit);
+        HandEvaluator.EvaluateHand(Deck.dealtCards);
+        
 
         //Card twoOfClubs = new Card(Rank.Two, Suit.Club);
         //Console.WriteLine($"Two of Clubs value = {Convert.ToString(twoOfClubs.Value , 2)}");

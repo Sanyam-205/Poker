@@ -53,7 +53,7 @@ namespace Poker.Core
             // To set this value, we use bitwise OR operator and left shift operator to se the bits of rank and suit. We OR it with the primes array to set the prime number corresponding to that rank. The primes array is indexed by the rank of the card. 
             // Lastly, we create a bitmask for the rank by left shifting 1 by the rank of the card and left shifting that by 16.
             // For an ace of spades, these individual values shifted by corresponding positions would look like this:
-            // ace = 14 ==> 00000000000000000000111000000000
+            // ace = 14 ==> 000 0000000000000 0000 1110 00000000
             // spade = 3 ==> 00000000000000000011000000000000
             // prime = 41 ==> 00000000000000000000000000101001
             // rank bitmask = 00010000000000000000000000000000
@@ -91,10 +91,10 @@ namespace Poker.Core
 
     public enum Suit : byte
     { 
-        Club = 0,
-        Diamond = 1,
-        Heart = 2,
-        Spade = 3
+        Club = 1,
+        Diamond = 2,
+        Heart = 4,
+        Spade = 8
     }
 
 }

@@ -11,6 +11,7 @@ namespace Poker.Core
         public static Card[] dealtCards = new Card[numberofCards];
         public static Card[] customDealtCards = new Card[numberofCards];
         public static Card[] CardDeck = new Card[52];
+        private static int cardDeckIndex = 0;
         public static void PopulateDeck()
         {
             int i = 0;
@@ -26,6 +27,7 @@ namespace Poker.Core
 
         public static void ShuffleDeck()
         {
+            cardDeckIndex = 0; //reset the card deck index pointer to 0 whenever shuffle deck is called.
             for (int i = CardDeck.Length - 1; i > 0; i--)
             {
                 int j = RandomNumberGenerator.GetInt32(i + 1);
@@ -40,20 +42,20 @@ namespace Poker.Core
             //    dealtCards = new Card[numberOfCards];
             for (int i = 0; i < numberOfCards; i++)
             {
-                dealtCards[i] = CardDeck[i];
+                dealtCards[i] = CardDeck[cardDeckIndex++];
 
-                Array.Copy(CardDeck, i + 1, CardDeck, i, CardDeck.Length - (i + 1));
+                //Array.Copy(CardDeck, i + 1, CardDeck, i, CardDeck.Length - (i + 1));
 
             }
         }
 
         public static void DealCustomCards(int numberOfCustomCards)
         {
-            Card customCard1 = new Card(Rank.Ten,   Suit.Spade);
-            Card customCard2 = new Card(Rank.Jack,  Suit.Spade);
-            Card customCard3 = new Card(Rank.Queen, Suit.Diamond);
-            Card customCard4 = new Card(Rank.Nine,  Suit.Diamond);
-            Card customCard5 = new Card(Rank.King,  Suit.Diamond);
+            Card customCard1 = new Card(Rank.Ten,   Suit.Club);
+            Card customCard2 = new Card(Rank.Jack,  Suit.Club);
+            Card customCard3 = new Card(Rank.Queen, Suit.Club);
+            Card customCard4 = new Card(Rank.Nine,  Suit.Club);
+            Card customCard5 = new Card(Rank.King,  Suit.Club);
 
             customDealtCards[0] = customCard1;
             customDealtCards[1] = customCard2;

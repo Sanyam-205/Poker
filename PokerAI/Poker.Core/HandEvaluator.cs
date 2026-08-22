@@ -41,6 +41,7 @@ namespace Poker.Core
             High_Card
                 
         }
+
         private static readonly ulong[] straightMask = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0b1111100000000, // Ace High
             0b111110000000, // King High
@@ -65,7 +66,18 @@ namespace Poker.Core
         public static void EvaluateHand(Card[] hand)
         {
             int sameSuit = hand[0].Value & hand[1].Value & hand[2].Value & hand[3].Value & hand[4].Value & Card.suitMask;
-            Console.WriteLine($"sameSuit value : {Convert.ToString(sameSuit, 2)}");
+            Console.WriteLine("Using & operator on card 1 through 5 = ");
+            Console.WriteLine(Convert.ToString(hand[0].Value & hand[1].Value & hand[2].Value & hand[3].Value & hand[4].Value, 2).PadLeft(32, '0'));
+            Console.WriteLine("Using & operator on card 1 through 5 & Card.SuitMask");
+            Console.WriteLine(Convert.ToString(hand[0].Value & hand[1].Value & hand[2].Value & hand[3].Value & hand[4].Value & 0b00000000000000001111000000000000, 2).PadLeft(32, '0'));
+            //Console.WriteLine(hand[2].Value & hand[3].Value & hand[4].Value);
+            //Console.WriteLine(hand[4].Value & Card.suitMask);
+            //000 0000000000000 0001 0000 00000010
+            //000 0000000000000 1111 0000 00000000
+
+            //00000000000000000000 1000 00000001
+
+            //Console.WriteLine($"sameSuit value : {Convert.ToString(sameSuit, 2)}");
             // when doing hand[0].value & hand[1].value & Card.suitMask, the bitwise AND operator will return a value that has the same suit bits set to one. If all 5 cards are of the same suit lets say spades, then sameSuit will be equal to 00000000000000000011000000000000. If the cards are of different suits, then sameSuit will be equal to 0. 
             // We use this to check in one cpu cycle if there is a flush or not. The same flush check will be useful for straight flush and royal flush.
 
@@ -91,15 +103,19 @@ namespace Poker.Core
 
             bool isStraight = CheckForStraight(rankCheck);
             bool isFlush = CheckForFlush(sameSuit);
+            Console.WriteLine($"isStraight = {isStraight}");
+            //Console.WriteLine($"sameSuit value = {Convert.ToString(sameSuit, 2)}");
 
-            if(isFlush)
-            {
-                Console.WriteLine("Same suit for all 5 cards");
-            }
-            if (isStraight)
-            {
-                Console.WriteLine("All 5 cards in a sequence");
-            }
+            Console.WriteLine($"isFlush = {CheckForFlush(sameSuit)}");
+
+            //if (isFlush)
+            //{
+            //    Console.WriteLine("Same suit for all 5 cards");
+            //}
+            //if (isStraight)
+            //{
+            //    Console.WriteLine("All 5 cards in a sequence");
+            //}
 
             if (isFlush && isStraight && isAceHigh) // royal flush
             {
@@ -173,6 +189,7 @@ namespace Poker.Core
 
         private static bool CheckForFlush(int sameSuit)
         {
+            Console.WriteLine(sameSuit);
             if (sameSuit != 0)
             {
                 //Console.WriteLine("Flush ");
